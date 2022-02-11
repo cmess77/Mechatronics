@@ -1,15 +1,18 @@
-#include <Servo.h> //library needed to control servo
+#include <Servo.h>
 
 //defining pin numbers in global space
 #define motorPin 3
-#define pot A0
+#define potentiometer A0
+
+#define servoLowerLimit 20
+#define servoUpperLimit 130
 
 //declaring variables for potentiometer position, servo motor input signal, input voltage
-int potPos, servoSignal;
+int potentiometerPosition, servoAngle;
 float inputVoltage;
 
-//declaring servoMotor object of class Servo (from servo.h)
 Servo servoMotor;
+
 
 void setup() {
   //starting serial communication
@@ -21,24 +24,28 @@ void setup() {
   pinMode(motorPin, OUTPUT);
 
   //setting input pin for potentiometer
-  pinMode(pot, INPUT);
+  pinMode(potentiometer, INPUT);
 
   servoMotor.attach(motorPin);
 }
 
+
 void loop() {
   //reading potentiometer value
-  potPos = analogRead(pot);
+  potentiometerPosition = analogRead(potentiometer);
+  
   //mapping 10bit analog input value to analog output value, servo angle increases 
   //with analog signal increase
-  servoSignal = map(potPos, 0, 1023, 20, 130);
+  servoAngle = map(potentiometerPosition, 0, 1023, servoLowerLimit, servoUpperLimit);
 
-  //setting servo angle
-  servoMotor.write(servoSignal);
+  //moving servoMotor to servoAngle position
+  servoMotor.write(servoAngle);
+
+  //calculating input voltage from analog signal
+  inputVoltage = potentiometerPosition * (5.0/1023.0);
 
   //printing needed table values
-  inputVoltage = potPos * (5.0 / 1023.0);
   Serial.print(inputVoltage);
   Serial.print(", ");
-  Serial.println(servoSignal);
+  Serial.println(servoAngle);
 }

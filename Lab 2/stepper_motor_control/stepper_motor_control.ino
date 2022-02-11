@@ -5,9 +5,12 @@
 #define in3 5
 #define in4 4
 
+//defining maximum step delay
+#define dT 5000000
+
 //declaring variables for potentiometer position, stepper motor step-delay, input voltage
-int potPos, delayTime;
-float inputVoltage;
+int potPos;
+float inputVoltage, dt, dutyCycle;
 
 void setup(void) {
   //starting serial communication
@@ -29,36 +32,43 @@ void setup(void) {
 void loop(void) {
   //case 1: pot in lower half, motor running counterclockwise
   while((potPos = analogRead(pot)) <= 512) { //this line reads/updates potPos every loop iteration
-    //mapping 10bit analog input value to analog output value, delayTime increases 
-    //with analog signal increase
-    delayTime = map(potPos, 0, 512, 800,10000);
-    //calls reverse drive function with delayTime as its only parameter
-    reverseDrive(delayTime);
-
     //calculating input voltage from analog signal
     inputVoltage = potPos * (5.0/1023.0);
+
+    //calculating dutyCycle
+    dutyCycle = 100 - (abs((inputVoltage - 2.5)) * (100/2.5));
+
+    //calculating dt
+    dt = dT * (dutyCycle/100); 
+    
+    //calls forward drive function with dt as its only parameter
+    reverseDrive(dt);
 
     //printing needed table values
     Serial.print(inputVoltage);
     Serial.print(", ");
-    Serial.println(delayTime);
-  }
+    Serial.println(dutyCycle);
+    }
+
 
   //case 2: pot in upper half, motor running clockwise
   while((potPos = analogRead(pot)) > 512) {
-    //mapping 10bit analog input value to analog output value, delayTime decreases 
-    //with analog signal increase
-    delayTime = map(potPos, 513, 1023, 10000,800);
-    //calls forward drive function with delayTime as its only parameter
-    forwardDrive(delayTime);
-
     //calculating input voltage from analog signal
     inputVoltage = potPos * (5.0/1023.0);
+
+    //calculating dutyCycle
+    dutyCycle = 100 - (abs((inputVoltage - 2.5)) * (100/2.5));
+
+    //calculating dt
+    dt = dT * (dutyCycle/100); 
+    
+    //calls forward drive function with dt as its only parameter
+    forwardDrive(dt);
 
     //printing needed table values
     Serial.print(inputVoltage);
     Serial.print(", ");
-    Serial.println(delayTime);
+    Serial.println(dutyCycle);
     }
 }
 
@@ -73,45 +83,45 @@ void pinWrite(int pin1,int pin2,int pin3,int pin4) {
 
 
 //function in order to complete 1 step of the stepper motor (counterclockwise)
-void reverseDrive(int us){
-  //calls pinWrite 8 times to make 1 step of the motor, with "us" microsecond delay between each
+void reverseDrive(float delayTime){
+  //calls pinWrite 8 times to make 1 step of the motor, with "delayTime" microsecond delay between each
   //coil activation
   pinWrite(1,0,0,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(1,1,0,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,1,0,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,1,1,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,0,1,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,0,1,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,0,0,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(1,0,0,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
 }
 
 //function in order to complete 1 step of the stepper motor (clockwise)
-void forwardDrive(int us){
-  //calls pinWrite 8 times to make 1 step of the motor, with "us" microsecond delay between each
+void forwardDrive(float delayTime){
+  //calls pinWrite 8 times to make 1 step of the motor, with "delayTime" microsecond delay between each
   //coil activation
   pinWrite(0,0,0,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,0,0,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,0,1,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,0,1,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,1,1,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(0,1,0,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(1,1,0,0);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
   pinWrite(1,0,0,1);
-  delayMicroseconds(us);
+  delayMicroseconds(delayTime);
 }

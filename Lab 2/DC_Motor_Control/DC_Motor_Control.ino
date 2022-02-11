@@ -2,11 +2,12 @@
 #define motorEnable 10
 #define input1 12
 #define input2 13
-#define pot A0
+#define potentiometer A0
 
 //declaring variables for potentiometer position, motor speed input signal
-int potPos, dcInput;
+int potentiometerPosition, dcMotorSignal;
 float inputVoltage;
+float dutyCyclePercent;
 
 void setup() {
   //starting serial communication
@@ -20,45 +21,53 @@ void setup() {
   pinMode(input2, OUTPUT);
 
   //setting input pin for potentiometer
-  pinMode(pot, INPUT);
+  pinMode(potentiometer, INPUT);
 }
 
 void loop() {
   //reading pot position using analog input signal
-  potPos = analogRead(pot);
+  potentiometerPosition = analogRead(potentiometer);
 
   //case 1: pot in lower half, motor running counterclockwise
-  if(potPos <= 512) {
+  if(potentiometerPosition <= 512) {
     //mapping 10bit analog input value to analog out value, PWM decreases with analog signal increase
-    dcInput = map(potPos, 0, 512, 255, 0);
+    dcMotorSignal = map(potentiometerPosition, 0, 512, 255, 0);
 
-    //setting enable pin to PWM signal from dcInput, and writing in1 HIGH and in2 LOW (counterclockwise)
-    analogWrite(motorEnable, dcInput);
+    //setting enable pin to PWM signal from dcMotorSignal, and writing in1 HIGH and in2 LOW (counterclockwise)
+    analogWrite(motorEnable, dcMotorSignal);
     digitalWrite(input1, LOW);
     digitalWrite(input2, HIGH);
 
+    //calculating input voltage from analog signal
+    inputVoltage = potentiometerPosition * (5.0/1023.0);
+    //calculating duty cycle (out of 100%) from dcMotorSignal
+    dutyCyclePercent = dcMotorSignal * (100.0/255.0);
+
     //printing needed table values
-    float inputVoltage = potPos * (5.0 / 1023.0);
     Serial.print(inputVoltage);
     Serial.print(", ");
-    Serial.println(dcInput);
+    Serial.println(dutyCyclePercent);
   }
 
   //case 2: pot in upper half, motor running clockwise
-  else if(potPos > 512) {
+  else if(potentiometerPosition > 512) {
     //mapping 10bit analog value to analog out value, PWM increases with analog signal increase
-    dcInput = map(potPos, 513, 1023, 0, 255);
+    dcMotorSignal = map(potentiometerPosition, 513, 1023, 0, 255);
 
-    //setting enable pin to PWM signal from dcInput, and writing in1 LOW and in2 HIGH 
-    analogWrite(motorEnable, dcInput);
+    //setting enable pin to PWM signal from dcMotorSignal, and writing in1 LOW and in2 HIGH 
+    analogWrite(motorEnable, dcMotorSignal);
     digitalWrite(input1, HIGH);
     digitalWrite(input2, LOW);
 
+    //calculating input voltage from analog signal
+    inputVoltage = potentiometerPosition * (5.0/1023.0);
+    //calculating duty cycle (out of 100%) from dcMotorSignal
+    dutyCyclePercent = dcMotorSignal * (100.0/255.0);
+
     //printing needed table values
-    float inputVoltage = potPos * (5.0 / 1023.0);
     Serial.print(inputVoltage);
     Serial.print(", ");
-    Serial.println(dcInput);
+    Serial.println(dutyCyclePercent);
   }
 
 }
