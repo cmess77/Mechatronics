@@ -26,6 +26,7 @@ void setup() {
   //setting input pin for potentiometer
   pinMode(potentiometer, INPUT);
 
+  //attaching servoMotor object to motorPin
   servoMotor.attach(motorPin);
 }
 

@@ -1,5 +1,5 @@
 //defining pin numbers in global space
-#define pot A0
+#define potentiometer A0
 #define in1 7
 #define in2 6
 #define in3 5
@@ -9,7 +9,7 @@
 #define dT 5000000
 
 //declaring variables for potentiometer position, stepper motor step-delay, input voltage
-int potPos;
+int potentiometerPosition;
 float inputVoltage, dt, dutyCycle;
 
 void setup(void) {
@@ -19,7 +19,7 @@ void setup(void) {
   Serial.println("Volt(in), delayTime");
 
   //setting input pin for potentiometer
-  pinMode(pot, INPUT);
+  pinMode(potentiometer, INPUT);
 
   //setting output pins for coil1, coil2, coil3, and coil4 on ULN2003
   pinMode(in1, OUTPUT);
@@ -31,9 +31,9 @@ void setup(void) {
 
 void loop(void) {
   //case 1: pot in lower half, motor running counterclockwise
-  while((potPos = analogRead(pot)) <= 512) { //this line reads/updates potPos every loop iteration
+  while((potentiometerPosition = analogRead(potentiometer)) <= 512) { //this line reads/updates potPos every loop iteration
     //calculating input voltage from analog signal
-    inputVoltage = potPos * (5.0/1023.0);
+    inputVoltage = potentiometerPosition * (5.0/1023.0);
 
     //calculating dutyCycle
     dutyCycle = 100 - (abs((inputVoltage - 2.5)) * (100/2.5));
@@ -52,9 +52,9 @@ void loop(void) {
 
 
   //case 2: pot in upper half, motor running clockwise
-  while((potPos = analogRead(pot)) > 512) {
+  while((potentiometerPosition = analogRead(potentiometer)) > 512) {
     //calculating input voltage from analog signal
-    inputVoltage = potPos * (5.0/1023.0);
+    inputVoltage = potentiometerPosition * (5.0/1023.0);
 
     //calculating dutyCycle
     dutyCycle = 100 - (abs((inputVoltage - 2.5)) * (100/2.5));
