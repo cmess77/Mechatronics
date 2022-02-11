@@ -5,7 +5,7 @@
 #define in3 5
 #define in4 4
 
-//declaring variables for potentiometer position, stepper motor step-delay
+//declaring variables for potentiometer position, stepper motor step-delay, input voltage
 int potPos, delayTime;
 float inputVoltage;
 
@@ -13,7 +13,7 @@ void setup(void) {
   //starting serial communication
   Serial.begin(9600);
   //printing header for output table
-  Serial.println("PotPos, delayTime");
+  Serial.println("Volt(in), delayTime");
 
   //setting input pin for potentiometer
   pinMode(pot, INPUT);
@@ -29,7 +29,8 @@ void setup(void) {
 void loop(void) {
   //case 1: pot in lower half, motor running counterclockwise
   while((potPos = analogRead(pot)) <= 512) { //this line reads/updates potPos every loop iteration
-    //mapping 10bit analog input value to analog output value, delayTime increases with analog signal increase
+    //mapping 10bit analog input value to analog output value, delayTime increases 
+    //with analog signal increase
     delayTime = map(potPos, 0, 512, 800,10000);
     //calls reverse drive function with delayTime as its only parameter
     reverseDrive(delayTime);

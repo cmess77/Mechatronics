@@ -38,8 +38,9 @@ void loop() {
     digitalWrite(input2, HIGH);
 
     //printing needed table values
-    inputVoltage = potPos * (5.0 / 1023.0);
+    float inputVoltage = potPos * (5.0 / 1023.0);
     Serial.print(inputVoltage);
+    Serial.print(", ");
     Serial.println(dcInput);
   }
 
