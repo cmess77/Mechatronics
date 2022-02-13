@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <Servo.h>
 
 //defining pin numbers in global space

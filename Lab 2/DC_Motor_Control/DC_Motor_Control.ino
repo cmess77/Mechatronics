@@ -1,5 +1,7 @@
 //defining pin numbers in global space
 #define motorEnable 10
+#include <Arduino.h>
+
 #define input1 12
 #define input2 13
 #define potentiometer A0

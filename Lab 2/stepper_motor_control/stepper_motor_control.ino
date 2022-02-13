@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 //defining pin numbers in global space
 #define potentiometer A0
 #define in1 7
