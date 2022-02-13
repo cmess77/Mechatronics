@@ -1,3 +1,4 @@
+//included in order to pacify VSCode lol
 #include <Arduino.h>
 
 //defining pin numbers in global space

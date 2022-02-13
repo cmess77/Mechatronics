@@ -1,7 +1,8 @@
-//defining pin numbers in global space
-#define motorEnable 10
+//included in order to pacify VSCode lol
 #include <Arduino.h>
 
+//defining pin numbers in global space
+#define motorEnable 10
 #define input1 12
 #define input2 13
 #define potentiometer A0

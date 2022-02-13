@@ -1,10 +1,18 @@
+//included in order to pacify VSCode lol
 #include <Arduino.h>
+
+/*
+included to control servo. analogWrite is not possible (can't change PWM freqency to 40Hz in order to control servos).
+digitalWrite can be used in tandem with delay statements (delay of 500us for 0deg, 2500us for 180deg). this solution
+is not practical, however.
+*/
 #include <Servo.h>
 
 //defining pin numbers in global space
 #define motorPin 3
 #define potentiometer A0
 
+//defining limits of servo movement
 #define servoLowerLimit 20
 #define servoUpperLimit 130
 
@@ -12,6 +20,7 @@
 int potentiometerPosition, servoAngle;
 float inputVoltage;
 
+//declaring servoMotor object of type Servo
 Servo servoMotor;
 
 
