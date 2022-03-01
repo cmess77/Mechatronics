@@ -13,13 +13,17 @@ void setup() {
 
     pinMode(trigPin, OUTPUT);
     pinMode(echoPin, INPUT);
+    pinMode(thermPin,INPUT);
+    pinMode(photoPin, INPUT);
 }
 
 void loop() {
-    //photoData = analogRead(photoPin);
-    //Serial.println(photoData);
-    //delay(100);
+    //photoSensor();
+    thermSensor();
+    //ultraSensor();
+}
 
+void ultraSensor(void) {
     digitalWrite(trigPin,LOW);
     delayMicroseconds(2);
     digitalWrite(trigPin, HIGH);
@@ -28,4 +32,16 @@ void loop() {
     duration = pulseIn(echoPin, HIGH);
     ultraData = (duration * 0.0345) * 0.5; //in cenimeters
     Serial.println(ultraData);
+}
+
+void photoSensor(void) {
+    photoData = analogRead(photoPin);
+    Serial.println(photoData);
+    delay(100);
+}
+
+void thermSensor(void) {
+    thermData = analogRead(thermPin);
+    Serial.println(thermData);
+    delay(100);
 }
