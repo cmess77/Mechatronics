@@ -34,3 +34,6 @@
 *.DS_Store
 .vscode
 *.png
+*.docx
+*.pdf
+*.xlsx
