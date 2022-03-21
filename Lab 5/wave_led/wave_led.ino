@@ -1,6 +1,6 @@
 #include <Arduino.h>
 // defining pins
-#define clock 10
+#define shift 10
 #define latch 9
 #define data 8
 
@@ -23,9 +23,9 @@ void writeRegister(boolean register_vals[8]) {
     from register to mux
     */
     for(int i = 7; i >=0; i--) {
-        digitalWrite(clock, LOW);// shifts output pin with each iteration
+        digitalWrite(shift, LOW);// shifts output pin with each iteration
         digitalWrite(data, register_vals[i]);// actually writing the value
-        digitalWrite(clock, HIGH);
+        digitalWrite(shift, HIGH);
         
         // printing values to serial output
         Serial.print(register_vals[i]);
@@ -39,7 +39,7 @@ void writeRegister(boolean register_vals[8]) {
 void setup() {
     pinMode(latch, OUTPUT);
     pinMode(data, OUTPUT);
-    pinMode(clock, OUTPUT);
+    pinMode(shift, OUTPUT);
 
     Serial.begin(9600);
 }
