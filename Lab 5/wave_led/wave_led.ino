@@ -17,10 +17,15 @@ boolean led_7[8] = {1,0,0,0,0,0,0,0};// right led
 
 
 void writeRegister(boolean register_vals[8]) {
-    digitalWrite(latch, LOW); // allows us to write data to mux
+    /*  
+    Set low initially so that, when set high later,
+    an empty register is loaded
+    */
+    digitalWrite(latch, LOW);
+
 
     /* iterates over register_vals to write all 8 values 
-    from register to mux
+    from array to register
     */
     for(int i = 7; i >=0; i--) {
         digitalWrite(shift, LOW);// shifts output pin with each iteration
@@ -33,7 +38,7 @@ void writeRegister(boolean register_vals[8]) {
     }
 
     Serial.print("\n");
-    digitalWrite(latch, HIGH);// disallows data transfer to mux
+    digitalWrite(latch, HIGH);// loads a new, empty register
 }
 
 void setup() {
