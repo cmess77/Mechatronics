@@ -5,10 +5,10 @@
 #define data 8
 
 // arrays for simplifying code later
-boolean first_patt[8] = {1,0,0,0,0,0,0,1};
-boolean second_patt[8] = {0,1,0,0,0,0,1,0};
-boolean third_patt[8] = {0,0,1,0,0,1,0,0};
-boolean fourth_patt[8] = {0,0,0,1,1,0,0,0};
+boolean first_patt[8] = {1,0,0,0,0,0,0,1};// leftmost and rightmost
+boolean second_patt[8] = {0,1,0,0,0,0,1,0};// 2nd and 7th
+boolean third_patt[8] = {0,0,1,0,0,1,0,0};// 3rd and 6th
+boolean fourth_patt[8] = {0,0,0,1,1,0,0,0};// 4th and 5th
 
 
 

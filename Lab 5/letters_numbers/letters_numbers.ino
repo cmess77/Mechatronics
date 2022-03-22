@@ -1,6 +1,6 @@
 #include <Arduino.h>
 // defining pins
-#define clock 10
+#define shift 10
 #define latch 9
 #define data 8
 
@@ -26,15 +26,20 @@ boolean nine[8] = {1,1,1,0,0,1,1,0};// 9
 
 
 void writeRegister(boolean register_vals[8]) {
-    digitalWrite(latch, LOW); // allows us to write data to mux
+    /*  
+    Set low initially so that, when set high later,
+    an empty register is loaded
+    */
+    digitalWrite(latch, LOW);
+
 
     /* iterates over register_vals to write all 8 values 
-    from register to mux
+    from array to register
     */
     for(int i = 7; i >=0; i--) {
-        digitalWrite(clock, LOW);// shifts output pin with each iteration
+        digitalWrite(shift, LOW);// shifts output pin with each iteration
         digitalWrite(data, register_vals[i]);// actually writing the value
-        digitalWrite(clock, HIGH);
+        digitalWrite(shift, HIGH);
         
         // printing values to serial output
         Serial.print(register_vals[i]);
@@ -42,13 +47,13 @@ void writeRegister(boolean register_vals[8]) {
     }
 
     Serial.print("\n");
-    digitalWrite(latch, HIGH);// disallows data transfer to mux
+    digitalWrite(latch, HIGH);// loads a new, empty register
 }
 
 void setup() {
     pinMode(latch, OUTPUT);
     pinMode(data, OUTPUT);
-    pinMode(clock, OUTPUT);
+    pinMode(shift, OUTPUT);
 
     Serial.begin(9600);
 }
@@ -77,6 +82,7 @@ void loop() {
     writeRegister(nine);
     delay(500);
 
+    // writing letters to display
     writeRegister(A);
     delay(500);
     writeRegister(b);
