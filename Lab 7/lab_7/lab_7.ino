@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 const int BUTTON0 = 6;
 const int BUTTON1 = 7;
 const int BUTTON2 = 8;
@@ -15,7 +17,7 @@ float d = 36.71;
 float e_high = 41.2;
 float f_high = 43.65;
 
-int octave_flag = 0;
+int octave_flag = -1;
 
 
 void setup() {
@@ -76,93 +78,105 @@ void loop() {
                 octave_flag = 1;
             }
         }
+        
+        else {
+          noTone(SPEAKER);
+        }
     }
     // while loop for higher octave
     while(octave_flag == 1) {
         if((digitalRead(BUTTON0) == 0) || (digitalRead(BUTTON1) == 0) || (digitalRead(BUTTON2) == 0) || (digitalRead(BUTTON3) == 0) || (digitalRead(BUTTON4) == 0)) {
             if(digitalRead(BUTTON0) == 0) {
-                Serial.println("Playing e_low");
+                Serial.println("Playing e_low * 2");
                 tone(SPEAKER, e_low * 2);
             }
             if((digitalRead(BUTTON0) ==0) && (digitalRead(BUTTON1) == 0)) {
-                Serial.println("Playing f_low");
+                Serial.println("Playing f_low * 2");
                 tone(SPEAKER, f_low * 2);
             }
             if((digitalRead(BUTTON1) ==0)) {
-                Serial.println("Playing g");
+                Serial.println("Playing g * 2");
                 tone(SPEAKER, g * 2);
             }
             if((digitalRead(BUTTON1) ==0) && (digitalRead(BUTTON2) == 0)) {
-                Serial.println("Playing a");
+                Serial.println("Playing a * 2");
                 tone(SPEAKER, a * 2);
             }
             if((digitalRead(BUTTON2) ==0)) {
-                Serial.println("Playing b");
+                Serial.println("Playing b * 2");
                 tone(SPEAKER, b * 2);
             }
             if((digitalRead(BUTTON2) ==0) && (digitalRead(BUTTON3) == 0)) {
-                Serial.println("Playing c");
+                Serial.println("Playing c * 2");
                 tone(SPEAKER, c * 2);
             }
             if((digitalRead(BUTTON3) ==0)) {
-                Serial.println("Playing d");
+                Serial.println("Playing d * 2");
                 tone(SPEAKER, d * 2);
             }
             if((digitalRead(BUTTON3) ==0) && (digitalRead(BUTTON4) == 0)) {
-                Serial.println("Playing e_high");
+                Serial.println("Playing e_high * 2");
                 tone(SPEAKER, e_high * 2);
             }
             if((digitalRead(BUTTON4) ==0)) {
-                Serial.println("Playing f_high");
+                Serial.println("Playing f_high * 2");
                 tone(SPEAKER, f_high * 2);
             }
             if((digitalRead(BUTTON0) ==0) && (digitalRead(BUTTON1) == 0) && (digitalRead(BUTTON2) == 0)) {
                 octave_flag = 0;
             }
         }
+
+        else {
+            noTone(SPEAKER);
+        }
     }
     // while loop for lower octave
     while(octave_flag == -1) {
         if((digitalRead(BUTTON0) == 0) || (digitalRead(BUTTON1) == 0) || (digitalRead(BUTTON2) == 0) || (digitalRead(BUTTON3) == 0) || (digitalRead(BUTTON4) == 0)) {
             if(digitalRead(BUTTON0) == 0) {
-                Serial.println("Playing e_low");
+                Serial.println("Playing e_low / 2");
                 tone(SPEAKER, e_low / 2);
             }
             if((digitalRead(BUTTON0) ==0) && (digitalRead(BUTTON1) == 0)) {
-                Serial.println("Playing f_low");
+                Serial.println("Playing f_low / 2");
                 tone(SPEAKER, f_low / 2);
             }
             if((digitalRead(BUTTON1) ==0)) {
-                Serial.println("Playing g");
+                Serial.println("Playing g / 2");
                 tone(SPEAKER, g / 2);
             }
             if((digitalRead(BUTTON1) ==0) && (digitalRead(BUTTON2) == 0)) {
-                Serial.println("Playing a");
+                Serial.println("Playing a / 2");
                 tone(SPEAKER, a / 2);
             }
             if((digitalRead(BUTTON2) ==0)) {
-                Serial.println("Playing b");
+                Serial.println("Playing b / 2");
                 tone(SPEAKER, b / 2);
             }
             if((digitalRead(BUTTON2) ==0) && (digitalRead(BUTTON3) == 0)) {
-                Serial.println("Playing c");
+                Serial.println("Playing c / 2");
                 tone(SPEAKER, c / 2);
             }
             if((digitalRead(BUTTON3) ==0)) {
-                Serial.println("Playing d");
+                Serial.println("Playing d / 2");
                 tone(SPEAKER, d / 2);
             }
             if((digitalRead(BUTTON3) ==0) && (digitalRead(BUTTON4) == 0)) {
-                Serial.println("Playing e_high");
+                Serial.println("Playing e_high / 2");
                 tone(SPEAKER, e_high / 2);
             }
             if((digitalRead(BUTTON4) ==0)) {
-                Serial.println("Playing f_high");
+                Serial.println("Playing f_high / 2");
                 tone(SPEAKER, f_high / 2);
             }
             if((digitalRead(BUTTON2) ==0) && (digitalRead(BUTTON3) == 0) && (digitalRead(BUTTON4) == 0)) {
                 octave_flag = 0;
             }
+        }
+
+        else {
+          noTone(SPEAKER);
         }
     }
 }
